@@ -2,10 +2,18 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
-  div
-    span {{urlName}}
-  div
-    span {{counter}}
-  div
-    span {{statusCode}}
+  div( ng-repeat="section in sections" )
+    h3 {{section.name}}
+    table( class="table" )
+      thead
+        tr
+          th Name
+          th URL
+          th Last Checked
+          th Status
+      tbody
+        tr( ng-repeat="item in section.items" )
+          td {{item.label}}
+          td {{item.url}}
+          td {{data[item.id].counter}}
+          td {{data[item.id].status}}

@@ -1,16 +1,17 @@
 angular.module( 'monitorApp', [ ] )
 .controller( 'monitorCtrl', function( $scope, $http, socket ){
   socket.on( 'update', function( data ){
-    $scope.counter = data.counter;
-    $scope.statusCode = data.status;
-    $scope.urlName = data.url;
+    $scope.data[data.id] = data;
   })
-  $scope.checkUrl = function(){
-    $http.post( 'webstatus', { url: $scope.url }).success( function( data ){
-      $scope.urlName = $scope.url;
-      $scope.statusCode = data.status;
+  $http.get( "/config" ).success( function( data ){
+    $scope.sections = data.sections;
+    $scope.data = {};
+    data.sections.forEach( function( section ){
+      section.items.forEach( function( item ){
+        data[item.id] = {};
+      })
     })
-  }
+  })
 })
 .factory('socket', function ($rootScope) {
   var socket = io.connect();
