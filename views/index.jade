@@ -1,19 +1,15 @@
 extends layout
 
 block content
-  h1= title
+  h1 {{title}}
   div( ng-repeat="section in sections" )
     h3 {{section.name}}
-    table( class="table" )
+    table( class="table table-condensed" )
       thead
         tr
-          th Name
-          th URL
-          th Last Checked
-          th Status
+          th( ng-repeat="label in section.labels" ) {{label}}
+          th Error
       tbody
-        tr( ng-repeat="item in section.items" )
-          td {{item.label}}
-          td {{item.url}}
-          td {{data[item.id].counter}}
-          td {{data[item.id].status}}
+        tr( ng-repeat="item in section.items" ng-class="{'danger': data[item.id].error}")
+          td( ng-repeat="key in section.keys") {{data[item.id][key]}}
+          td {{data[item.id].error}}

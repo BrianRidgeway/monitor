@@ -1,0 +1,71 @@
+{
+  "title": "Service Monitor",
+  "sections": [
+    {
+      "name": "Web Servers",
+      "labels": [
+        "URL", "Status Code", "Last Checked"
+      ],
+      "keys": [ "url", "status", "lastChecked" ],
+      "items": [
+        {
+          "id": "yahoo",
+          "label": "Yahoo!",
+          "type": "web",
+          "url": "http://www.yahoo.com",
+          "expectedValue": "200"
+        },
+        {
+          "id": "google",
+          "label": "Google",
+          "type": "web",
+          "url": "http://www.google.com",
+          "expectedValue": "200"
+        },
+        {
+          "id": "local",
+          "label": "Local",
+          "type": "web",
+          "url": "http://www.localhost.com:3001",
+          "expectedValue": "200"
+        }
+
+      ]
+    },
+    {
+      "name": "Database Servers",
+      "labels": [ "Server", "Slave Running", "Slave Delay" ],
+      "keys": [ "label", "slave", "delay" ],
+      "items": [
+        {
+          "id": "db1",
+          "connect": {
+            "user": "dbusername",
+            "password": "secred",
+            "host": "hostname1",
+            "port": 3306
+          },
+          "label": "MySQL Replication Database",
+          "type": "mysqldb",
+          "queries": [
+            {
+              "sql": "select variable_value from information_schema.global_status where variable_name='SLAVE_RUNNING'",
+              "checkType": "equal",
+              "checkValue": "ON",
+              "key": "slave",
+              "field": "variable_value"
+            },
+            {
+              "sql": "select now()-timestamp(heartbeat) as 'ts' from test.heartbeat",
+              "checkType": "equal",
+              "checkValue": "ON",
+              "key": "delay",
+              "field": "ts"
+            }
+          ]
+        }
+      ]
+    }
+
+  ]
+}

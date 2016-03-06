@@ -4,6 +4,7 @@ angular.module( 'monitorApp', [ ] )
     $scope.data[data.id] = data;
   })
   $http.get( "/config" ).success( function( data ){
+    $scope.title = data.title;
     $scope.sections = data.sections;
     $scope.data = {};
     data.sections.forEach( function( section ){
