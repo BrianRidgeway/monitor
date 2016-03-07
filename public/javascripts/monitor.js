@@ -1,15 +1,20 @@
 angular.module( 'monitorApp', [ ] )
 .controller( 'monitorCtrl', function( $scope, $http, socket ){
+  $scope.data = {};
+  $scope.sections = [];
+  $scope.title = "";
   socket.on( 'update', function( data ){
     $scope.data[data.id] = data;
   })
   $http.get( "/config" ).success( function( data ){
     $scope.title = data.title;
     $scope.sections = data.sections;
-    $scope.data = {};
     data.sections.forEach( function( section ){
       section.items.forEach( function( item ){
-        data[item.id] = {};
+        $scope.data[item.id] = {};
+        section.keys.forEach( function( key ){
+          $scope.data[item.id][key] = item[key];
+        })
       })
     })
   })

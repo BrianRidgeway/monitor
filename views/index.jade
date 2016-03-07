@@ -8,8 +8,6 @@ block content
       thead
         tr
           th( ng-repeat="label in section.labels" ) {{label}}
-          th Error
       tbody
         tr( ng-repeat="item in section.items" ng-class="{'danger': data[item.id].error}")
           td( ng-repeat="key in section.keys") {{data[item.id][key]}}
-          td {{data[item.id].error}}
